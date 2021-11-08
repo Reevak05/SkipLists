@@ -1,2 +1,4 @@
-This document contains a list of the sources used for gathering information. For each source, include the URL and a couple of sentences about how the source was used.
+This document contains a list of the sources used for gathering information. For each source, include the URL and 1-2 sentences about how the source was used.
 
+https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/skiplists.pdf
+Used to learn what a SkipList is.
