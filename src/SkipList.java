@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class SkipList {
 
     SkipListNode head;
@@ -7,22 +9,55 @@ public class SkipList {
         head = new SkipListNode(Integer.MIN_VALUE, 0);
         maxHeight = 0;
     }
+    private class Node{
+        public SkipListNode[] next;
+        public int val;
 
-public void insert(int data, int height) {
-    if (height > maxHeight) {
-        maxHeight = height;
-        head.changeHeight(height);
-    }
-    SkipListNode newNode = new SkipListNode(data, height);
-    for (int i = 0; i <= newNode.height; i++) {
-        SkipListNode currentNode = head;
-        while (currentNode.nextNodes[i] != null && currentNode.nextNodes[i].data < data) {
-            currentNode = currentNode.nextNodes[i];
+        public Node(int value, int level){
+            val = value;
+            next = new SkipListNode[level];
         }
-        newNode.nextNodes[i] = currentNode.nextNodes[i];
-        currentNode.nextNodes[i] = newNode;
     }
-}
+
+    private SkipListNode front = new SkipListNode(0, 35);
+    private Random rand = new Random();
+    private int numLevels = 1;
+
+    public void insert(int data, int height) {
+        if (height > maxHeight) {
+            maxHeight = height;
+            head.changeHeight(height);
+        }
+        SkipListNode newNode = new SkipListNode(data, height);
+        for (int i = 0; i <= newNode.height; i++) {
+            SkipListNode currentNode = head;
+            while (currentNode.nextNodes[i] != null && currentNode.nextNodes[i].data < data) {
+                currentNode = currentNode.nextNodes[i];
+            }
+            newNode.nextNodes[i] = currentNode.nextNodes[i];
+            currentNode.nextNodes[i] = newNode;
+        }
+    }
+
+    public boolean delete(int value){
+        SkipListNode current = front;
+        boolean falseTrue = false;
+
+        for (int i = numLevels - 1; i >= 0; i--) {
+            for (;current.nextNodes[i] != null; current = current.nextNodes[i]) {
+                if (current.nextNodes[i].data == value) {
+                    falseTrue = true;
+                    current.nextNodes[i] = current.nextNodes[i].nextNodes[i];
+                    break;
+                }
+                if (current.nextNodes[i].data > value) {
+                    break;
+                }
+            }
+        }
+        return falseTrue;
+    }
+
 
     @Deprecated
     public void oldPrint() {
