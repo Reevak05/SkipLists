@@ -8,20 +8,21 @@ public class SkipList {
         maxHeight = 0;
     }
 
-    public void insert(int data, int height) {
-        if (height > maxHeight) {
-            maxHeight = height;
-            head.changeHeight(height);
-        }
-        SkipListNode newNode = new SkipListNode(data, height);
-        for (int i = 0; i <= newNode.height; i++) {
-            SkipListNode currentNode = head;
-            while (currentNode.nextNodes[i] != null) {
-                currentNode = currentNode.nextNodes[i];
-            }
-            currentNode.nextNodes[i] = newNode;
-        }
+public void insert(int data, int height) {
+    if (height > maxHeight) {
+        maxHeight = height;
+        head.changeHeight(height);
     }
+    SkipListNode newNode = new SkipListNode(data, height);
+    for (int i = 0; i <= newNode.height; i++) {
+        SkipListNode currentNode = head;
+        while (currentNode.nextNodes[i] != null && currentNode.nextNodes[i].data < data) {
+            currentNode = currentNode.nextNodes[i];
+        }
+        newNode.nextNodes[i] = currentNode.nextNodes[i];
+        currentNode.nextNodes[i] = newNode;
+    }
+}
 
     @Deprecated
     public void oldPrint() {
@@ -43,7 +44,7 @@ public class SkipList {
                 currentNode = currentNode.nextNodes[i];
                 System.out.print(" -> " + ((currentNode != null) ? currentNode.data : "*"));
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 
@@ -51,17 +52,17 @@ public class SkipList {
         SkipList skipList = new SkipList();
         System.out.println("\n––––––\nExpected:\n-2147483648");
         skipList.print();
-        skipList.insert(3, 0);
-        System.out.println("\n––––––\nExpected:\n-2147483648 -> 3");
+        skipList.insert(4, 0);
+        System.out.println("\n––––––\nExpected:\n-2147483648 -> 4");
         skipList.print();
-        skipList.insert(7, 0);
-        System.out.println("\n––––––\nExpected:\n-2147483648 -> 3 -> 57");
+        skipList.insert(2, 0);
+        System.out.println("\n––––––\nExpected:\n-2147483648 -> 2 -> 4");
         skipList.print();
         skipList.insert(12, 1);
-        System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> 12\n-2147483648 -> 3 -> 57 -> 12");
+        System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> 12\n-2147483648 -> 2 -> 4 -> 12");
         skipList.print();
-        skipList.insert(18, 2);
-        System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> * -> 18\n-2147483648 -> * -> * -> 12 -> 18\n-2147483648 -> 3 -> 7 -> 12 -> 18");
+        skipList.insert(9, 2);
+        System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> 9 -> *\n-2147483648 -> * -> * -> 9 -> 12\n-2147483648 -> 2 -> 4 -> 9 -> 12");
         skipList.print();
     }
 }
