@@ -2,3 +2,14 @@ This document contains a list of the sources used for gathering information. For
 
 https://www.cs.cmu.edu/~ckingsf/bioinfo-lectures/skiplists.pdf
 Used to learn what a SkipList is.
+
+https://stackoverflow.com/questions/16113125/two-semicolons-inside-a-for-loop-parentheses
+semicolons in for loop explaination
+
+https://www.csee.umbc.edu/courses/undergraduate/341/fall01/Lectures/SkipLists/skip_lists/skip_lists.html
+used to figure out runtime and background of skip lists
+
+https://www.javatpoint.com/skip-list-in-data-structure
+used to understand opperations, also source of picture
+
+
