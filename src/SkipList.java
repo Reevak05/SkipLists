@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class SkipList {
 
     SkipListNode head;
@@ -9,19 +7,6 @@ public class SkipList {
         head = new SkipListNode(Integer.MIN_VALUE, 0);
         maxHeight = 0;
     }
-    private class Node{
-        public SkipListNode[] next;
-        public int val;
-
-        public Node(int value, int level){
-            val = value;
-            next = new SkipListNode[level];
-        }
-    }
-
-    private SkipListNode front = new SkipListNode(0, 35);
-    private Random rand = new Random();
-    private int numLevels = 1;
 
     public void insert(int data, int height) {
         if (height > maxHeight) {
@@ -40,13 +25,13 @@ public class SkipList {
     }
 
     public boolean delete(int value){
-        SkipListNode current = front;
-        boolean falseTrue = false;
 
-        for (int i = numLevels - 1; i >= 0; i--) {
-            for (;current.nextNodes[i] != null; current = current.nextNodes[i]) {
+        boolean wasPresent = false;
+
+        for (int i = maxHeight; i >= 0; i--) {
+            for (SkipListNode current = head; current.nextNodes[i] != null; current = current.nextNodes[i]) {
                 if (current.nextNodes[i].data == value) {
-                    falseTrue = true;
+                    wasPresent = true;
                     current.nextNodes[i] = current.nextNodes[i].nextNodes[i];
                     break;
                 }
@@ -55,9 +40,8 @@ public class SkipList {
                 }
             }
         }
-        return falseTrue;
+        return wasPresent;
     }
-
 
     @Deprecated
     public void oldPrint() {
@@ -98,6 +82,12 @@ public class SkipList {
         skipList.print();
         skipList.insert(9, 2);
         System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> 9 -> *\n-2147483648 -> * -> * -> 9 -> 12\n-2147483648 -> 2 -> 4 -> 9 -> 12");
+        skipList.print();
+        skipList.delete(9);
+        System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> * -> *\n-2147483648 -> * -> * -> * -> 12\n-2147483648 -> 2 -> 4 -> * -> 12");
+        skipList.print();
+        skipList.delete(3);
+        System.out.println("\n––––––\nExpected:\n-2147483648 -> * -> * -> * -> *\n-2147483648 -> * -> * -> * -> 12\n-2147483648 -> 2 -> 4 -> * -> 12");
         skipList.print();
     }
 }
