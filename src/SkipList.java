@@ -10,23 +10,6 @@ public class SkipList {
         maxHeight = 0; // All height values are zero-indexed, so they correspond with the nodes' array indexes
     }
 
-    @Deprecated
-    public void oldInsert(int data, int height) {
-        if (height > maxHeight) { // If the new node's height is taller than head, increase the height of head (and change maxHeight accordingly)
-            maxHeight = height;
-            head.changeHeight(height);
-        }
-        SkipListNode newNode = new SkipListNode(data, height);
-        for (int i = 0; i <= newNode.height; i++) { // Start at the new node's height and decrease; for each level,
-            SkipListNode currentNode = head;
-            while (currentNode.nextNodes[i] != null && currentNode.nextNodes[i].data < data) { // find where the new node should go in order to maintain consecutive order
-                currentNode = currentNode.nextNodes[i];
-            }
-            newNode.nextNodes[i] = currentNode.nextNodes[i]; // set the new node's pointer at that level to point to the next node
-            currentNode.nextNodes[i] = newNode; // set the previous node's pointer at that level to point to the new node
-        }
-    }
-
     public void insert(int data, int height) {
         if (height > maxHeight) { // If the new node is taller than the head node, increase the height of head (and change maxHeight accordingly)
             maxHeight = height;
@@ -66,8 +49,7 @@ public class SkipList {
             if (currentNode.nextNodes[currentLevel] == null || currentNode.nextNodes[currentLevel].data > data) { // If there is no node after the current node or if the node after the current node has a value greater than the new node, insert the node if on the lowest level or, if not, move down
                 if (currentNode.data == data) {
                     return true;
-                }
-                else {
+                } else {
                     if (currentLevel == 0) {
                         return false;
                     } else { // If not on the lowest level, go down a level
@@ -95,17 +77,6 @@ public class SkipList {
             }
         }
         return wasPresent;
-    }
-
-    @Deprecated
-    public void oldPrint() {
-        System.out.println(" \nSkipList: ");
-        SkipListNode currentNode = head;
-        System.out.print(currentNode.data + ", h: " + currentNode.height);
-        while (currentNode.nextNodes[currentNode.height] != null) {
-            currentNode = currentNode.nextNodes[currentNode.height];
-            System.out.print(" -> " + currentNode.data + ", h: " + currentNode.height);
-        }
     }
 
     public void print() {
