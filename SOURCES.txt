@@ -12,4 +12,5 @@ used to figure out runtime and background of skip lists
 https://www.javatpoint.com/skip-list-in-data-structure
 used to understand opperations, also source of picture
 
-
+https://www.ics.uci.edu/~pattis/ICS-23/lectures/notes/Skip%20Lists.pdf
+used to find applications of skiplists
