@@ -64,29 +64,42 @@ public class SkipList {
 
     public boolean delete(int value) {
         int pointer_size = 0;
-
         int currentLevel = maxHeight;//start from the top of the SkipList
         SkipListNode currentNode = head;
-        SkipListNode[] formerNodeset = new SkipListNode[maxHeight + 1];
-        int[] formerNodeset_level = new int[maxHeight + 1];
+        SkipListNode[] formerNodeset = new SkipListNode[maxHeight + 1]; //To store the former Node
+        int[] formerNodeset_level = new int[maxHeight + 1]; //
         if (!search(value)) {
             return false;
         } else {
             while (currentLevel > -1) {
-                if (currentNode.nextNodes[currentLevel].data == value) {
+                //In order to make sure that that the case that the whole level is deleted
+                if (currentNode.nextNodes[currentLevel] == null){
+                    currentLevel--;
+                }
+                //To check that if we find the value we want, and goes down to change the whole level at that point
+                else if (currentNode.nextNodes[currentLevel].data == value) {
                     formerNodeset[pointer_size] = currentNode;
                     formerNodeset_level[pointer_size] = currentLevel;
                     currentLevel--;
                     pointer_size++;
-                } else if (currentNode.data < value && currentNode.nextNodes[currentLevel].data > value) {
+                }
+                //To check which interval the value we want got to
+                else if (currentNode.data < value && currentNode.nextNodes[currentLevel].data > value) {
                     currentLevel--;
-                } else if (currentNode.nextNodes[currentLevel].data != value) {
+                }
+                //To loop through the same level
+                else if (currentNode.nextNodes[currentLevel].data != value) {
                     currentNode = currentNode.nextNodes[currentLevel];
                 }
             }
         }
+        // To change the pointer
         for (int i = 0; i < pointer_size; i++) {
-            formerNodeset[i].nextNodes[formerNodeset_level[i]] = formerNodeset[i].nextNodes[formerNodeset_level[i]].nextNodes[formerNodeset_level[i]];
+            if (formerNodeset[i].nextNodes[formerNodeset_level[i]] != null){
+                formerNodeset[i].nextNodes[formerNodeset_level[i]] = formerNodeset[i].nextNodes[formerNodeset_level[i]].nextNodes[formerNodeset_level[i]];
+            } else {
+                formerNodeset[i].nextNodes[formerNodeset_level[i]] = null;
+            }
         }
         return true;
     }
