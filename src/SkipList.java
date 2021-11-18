@@ -63,20 +63,32 @@ public class SkipList {
     }
 
     public boolean delete(int value) {
-        boolean wasPresent = false;
-        for (int i = maxHeight; i >= 0; i--) {
-            for (SkipListNode current = head; current.nextNodes[i] != null; current = current.nextNodes[i]) {
-                if (current.nextNodes[i].data == value) {
-                    wasPresent = true;
-                    current.nextNodes[i] = current.nextNodes[i].nextNodes[i];
-                    break;
-                }
-                if (current.nextNodes[i].data > value) {
-                    break;
+        int pointer_size = 0;
+
+        int currentLevel = maxHeight;//start from the top of the SkipList
+        SkipListNode currentNode = head;
+        SkipListNode[] formerNodeset = new SkipListNode[maxHeight + 1];
+        int[] formerNodeset_level = new int[maxHeight + 1];
+        if (!search(value)) {
+            return false;
+        } else {
+            while (currentLevel > -1) {
+                if (currentNode.nextNodes[currentLevel].data == value) {
+                    formerNodeset[pointer_size] = currentNode;
+                    formerNodeset_level[pointer_size] = currentLevel;
+                    currentLevel--;
+                    pointer_size++;
+                } else if (currentNode.data < value && currentNode.nextNodes[currentLevel].data > value) {
+                    currentLevel--;
+                } else if (currentNode.nextNodes[currentLevel].data != value) {
+                    currentNode = currentNode.nextNodes[currentLevel];
                 }
             }
         }
-        return wasPresent;
+        for (int i = 0; i < pointer_size; i++) {
+            formerNodeset[i].nextNodes[formerNodeset_level[i]] = formerNodeset[i].nextNodes[formerNodeset_level[i]].nextNodes[formerNodeset_level[i]];
+        }
+        return true;
     }
 
     public void print() {
