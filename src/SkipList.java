@@ -47,10 +47,10 @@ public class SkipList {
 
         while (true) {
             if (currentNode.nextNodes[currentLevel] == null || currentNode.nextNodes[currentLevel].data > data) { // If there is no node after the current node or if the node after the current node has a value greater than the new node, insert the node if on the lowest level or, if not, move down
-                if (currentNode.data == data) {
+                if (currentNode.data == data) { // If the current node is the sought value, return true
                     return true;
-                } else {
-                    if (currentLevel == 0) {
+                } else { // Otherwise,
+                    if (currentLevel == 0) { // If on the lowest level, return false because the node is not present
                         return false;
                     } else { // If not on the lowest level, go down a level
                         currentLevel--;
@@ -64,7 +64,7 @@ public class SkipList {
 
     public boolean delete(int value) {
         int pointer_size = 0;
-        int currentLevel = maxHeight;//start from the top of the SkipList
+        int currentLevel = maxHeight; //start from the top of the SkipList
         SkipListNode currentNode = head;
         SkipListNode[] formerNodeset = new SkipListNode[maxHeight + 1]; //To store the former Node
         int[] formerNodeset_level = new int[maxHeight + 1]; //
@@ -72,7 +72,7 @@ public class SkipList {
             return false;
         } else {
             while (currentLevel > -1) {
-                //In order to make sure that that the case that the whole level is deleted
+                //In order to check if the whole level is deleted
                 if (currentNode.nextNodes[currentLevel] == null){
                     currentLevel--;
                 }
